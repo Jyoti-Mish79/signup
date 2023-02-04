@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up Page</title>
+    <style>
+        .error{
+            color:red;
+        }
+    </style>
+</head>
+<body>
+    <p class="error"></p>
+    <fieldset>
+        <legend>Sign Up</legend>
+        <form class="sign">
+            <label for="name">Name</label><br>
+            <input type="text" name="name" id="name" placeholder="Enter name"><br><br>
+            <label for="email">Email</label><br>
+            <input type="email" name="email" id="email" placeholder="Enter e-mail"><br><br>
+            <label for="password">Password</label><br>
+            <input type="password" name="password" id="pass" placeholder="Enter password"><br><br>
+            <label for="cpassword">Confrm Password</label><br>
+            <input type="password" name="cpassword" id="cpass" placeholder="Enter Confirm Password"><br><br>
+            <input type="submit">
+        </form>
+    </fieldset>
+    <script>
+        let signUp = document.querySelector(".sign");
+        let nameInput = document.getElementById('name');
+        let emailInput = document.getElementById('email');
+        let passwordInput = document.getElementById('pass');
+        let confirmInput = document.getElementById('cpass');
+        let error = document.querySelector('.error');
+      signUp.addEventListener('submit', validateForm);
+
+       let arr = [];
+       let id =1;
+       
+
+        function validateForm(e){
+            e.preventDefault();
+            let name = nameInput.value ;
+            let email = emailInput. value;
+            let password = passwordInput.value;
+            let con = confirmInput.value;
+            if(checkName(name)<2){
+                error.innerHTML="Name should at least be 2 letter word";
+            }
+            else if(email.includes("@") == false){
+                error.innerHTML="Email should be validated with regex";
+            }
+            else if(checkPasswor(password,name,email) == false){
+                error.innerHTML="Passwords should have at least 1 capital letter, 1 small, 1 number and 1 special characters, but password cannot be the same as name or email.";
+            }
+            else if(password != con){
+                error.innerHTML="Password and confirm password should be the same.";
+            }
+            else if(checkEmail(email) == false){
+                error.innerHTML="Email already exist";
+                error.style.color="red";
+            }
+            else {
+                error.innerHTML="Form has been successfully filled!";
+                error.style.color="green";
+                let obj={id:id++,name,email,password};
+                arr.push(obj);
+                console.log(arr);
+                nameInput.value = "";
+                emailInput.value="";
+                passwordInput.value="";
+                confirmInput.value="";
+                localStorage.setItem("data",JSON.stringify(arr));
+                window.location.href="./login.html"
+            }
+        }
+        function checkName(e){
+            let name = e.trim();
+            let arr = name.split(' ');
+            return arr.length;
+        }
+       function checkPasswor(password,name,email){
+        let sl=0,cl=0,d=0,sc=0;
+        for(let t of password){
+        if(t>='A' && t<='Z')
+        {
+            cl++;
+        }
+        else if(t>='a' && t<='z'){
+            sl++;
+        }
+        else if (t>='0' && t<='9'){
+            d++;
+
+        }
+        else{
+            sc++;
+        }
+        }
+        if(cl>=1 && sl>=1 && d>=1 && sc>=1 && password!=name && password!=email){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+        function checkEmail(email){
+            for(let t of arr){
+                if(t.email == email){
+                    return false
+                }
+            }
+           return true
+        }
+       
+    </script>
+</body>
+</html>

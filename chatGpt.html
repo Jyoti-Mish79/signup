@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Group</title>
+</head>
+<body>
+    <textarea name="" id="" cols="30" rows="10"></textarea><br><br>
+    <button>Submit</button>
+    <br><br>
+    <img src="./dog.jpg" alt="" height="500px" width="500px">
+    <div class="speak">
+
+    </div>
+    <script>
+        let data=[
+            {question: "What is a dog" , answer: "Dog is a animal with 4 legs. The dog is a domesticated descendant of the wolf. Also called the domestic dog, it is derived from the extinct Pleistocene wolf, and the modern wolf is the dog's nearest living relative. Dogs were the first species to be domesticated by hunter-gatherers over 15,000 years ago before the development of"  },
+            {question : "What is a cat" , answer: "Cat is a animal with 4 legs"}
+        ]
+        let input_question = document.querySelector('textarea');
+        let button = document.querySelector('button');
+        let speak = document.querySelector('.speak')
+        button.addEventListener('click',chatGpt);
+        function chatGpt(){
+            let question = input_question.value ;
+            for(let t of data)
+            {
+                if(t.question == question){
+                    let p = document.createElement('p');
+                    p.className="answerPara"
+                    p.innerHTML=t.answer;
+                    document.body.appendChild(p);
+                    let inputBox = document.createElement('input');
+                    inputBox.type="text";
+                    inputBox.placeholder="Enter your token";
+                    speak.appendChild(inputBox)
+                    let btn = document.createElement('button');
+                    btn.innerHTML="Speak";
+                    speak.appendChild(btn);
+                    speak.addEventListener('click',speakGpt);
+                }
+            }
+ 
+        }
+        function speakGpt(){
+            let answerPara = document.querySelector(".answerPara")
+            let ansPara = answerPara.innerHTML;
+            let utter = new SpeechSynthesisUtterance();
+            utter.lang = "en-US";
+            utter.text = ansPara;
+            utter.volume = 0.6
+
+            window.speechSynthesis.speak(utter);
+
+        }
+    </script>
+</body>
+</html>
